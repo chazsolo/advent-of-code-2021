@@ -1,3 +1,4 @@
 module.exports = {
-  sum: (a, b) => a + b
+  identity: (a) => a,
+  sum: (a, b) => a + b,
 };
