@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { identity, sum } = require('./util');
+const { identity, sum } = require('../../util');
 
 /**
  * Given a board, return true if a winner is found, false if not
@@ -39,13 +39,11 @@ const calculateAnswer = (board, drawnNumbers) => {
 
   const unmarkedValuesSum = unmarkedValues.reduce(sum);
 
-  console.log(`multiplying ${finalDrawn} * ${unmarkedValuesSum}`);
-
   // multiply finalDrawn by sum of unmarkedValues
   return finalDrawn * unmarkedValuesSum;
 }
 
-const lines = fs.readFileSync('./data/day4.txt', 'utf-8').split(/\r?\n/).filter(identity);
+const lines = fs.readFileSync('./data.txt', 'utf-8').split(/\r?\n/).filter(identity);
 const gameNumbers = lines.shift().split(',').map(n => +n);
 const boards = new Map();
 

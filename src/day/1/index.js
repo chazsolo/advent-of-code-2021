@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const data = fs.readFileSync('./src/data/day1.txt').toString().split('\r\n');
+const data = fs.readFileSync('./data.txt').toString().split(/\r?\n/);
 
 const incReduce = (increments, value, index, array) => {
     increments += value < array[index + 1] ? 1 : 0;

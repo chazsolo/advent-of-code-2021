@@ -1,7 +1,6 @@
 const fs = require('fs');
 
-// read file
-const array = fs.readFileSync('./src/data/day3.txt').toString().split('\r\n');
+const array = fs.readFileSync('./data.txt').toString().split(/\r?\n/);
 
 // Part 1 ---
 

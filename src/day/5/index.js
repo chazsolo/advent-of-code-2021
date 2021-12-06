@@ -1,8 +1,10 @@
 const fs = require('fs');
+const path = require('path');
 const clone = require('rfdc')();
-const { clamp, identity } = require('./util');
+const { clamp, identity } = require('../../util');
 
-const data = fs.readFileSync('./data/day5.txt', 'utf-8').split(/\r?\n/).filter(identity);
+const file = path.join(__dirname, 'data.txt');
+const data = fs.readFileSync(file, 'utf-8').split(/\r?\n/).filter(identity);
 
 const samePoint = (p1, p2) => p1.x === p2.x && p1.y === p2.y;
 const drawLine = ([p1, p2], grid) => {
