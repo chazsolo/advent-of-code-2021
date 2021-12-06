@@ -11,9 +11,15 @@ const checkBoard = (board, drawn) => {
   // check rows first
   let win = board.filter((row) => row.every(n => drawn.includes(n))).length >= 1;
 
+  if (win) return true;
+
   // then check columns
-  for (let i = 0; i < board.length; i++) {
-    const column = [board[i][0], board[i][1], board[i][2], board[i][3], board[i][4]];
+  for (let i = 0; i < board[0].length; i++) {
+    const column = [];
+    for (let j = 0; j < board[i].length; j++) {
+      column.push(board[j][i]);
+    }
+
     win = column.every(n => drawn.includes(n));
 
     if (win) break;
@@ -25,8 +31,6 @@ const checkBoard = (board, drawn) => {
 const calculateAnswer = (board, drawnNumbers) => {
   // get the number that was most recently drawn
   const finalDrawn = drawnNumbers[drawnNumbers.length - 1];
-
-  console.log(board);
 
   // get all unmarked numbers on the board
   const unmarkedValues = [
@@ -55,7 +59,7 @@ while (lines.length) {
   boards.set(boardId++, board);
 }
 
-function part1() {
+(function part1() {
   let winningBoard = null;
   let winningDrawn = [];
   let turn = 5; // start at turn 5, need at least 5 turns to have the first win
@@ -80,19 +84,17 @@ function part1() {
   const answer = calculateAnswer(winningBoard, winningDrawn);
 
   console.log('part 1 answer', answer);
-}
+})();
 
 (function part2() {
   // figure out which board is the last one to win. to do so, run each turn and when a board wins
   // remove it from the Map of boards. Once the Map has a single board left, we have our answer.
   // TODO doesn't work
   let lastBoardLeft;
-  let winningDrawn = [];
   let turn = 5; // start at turn 5, need at least 5 turns to have the first win
 
   // play
-  while (boards.size > 1) {
-    // console.log('turn', turn, '--------------');
+  while (boards.size >= 1) {
     // get the drawn numbers
     const drawn = gameNumbers.slice(0, turn);
 
@@ -100,22 +102,21 @@ function part1() {
       const win = checkBoard(board, drawn);
 
       if (win) {
-        // console.log('deleting board', id);
-        boards.delete(id);
+        if (boards.size > 1) {
+          boards.delete(id);
+        } else {
+          lastBoardLeft = boards.get([...boards.keys()][0]);
+
+          const answer = calculateAnswer(lastBoardLeft, drawn);
+
+          console.log('part 2 answer', answer);
+
+          // stop the iteration
+          boards.delete(id);
+        }
       }
     }
 
-    // console.log('boards left', boards.size);
-
-    winningDrawn = [...drawn];
-
     turn++;
   }
-
-  // at this point there should be only one board left
-  lastBoardLeft = boards.get([...boards.keys()][0]);
-
-  const answer = calculateAnswer(lastBoardLeft, winningDrawn);
-
-  console.log('part 2 answer', answer);
 })();
