@@ -3,7 +3,7 @@ const path = require('path');
 const { sum } = require('../../util');
 
 const file = path.join(__dirname, 'data.txt');
-const data = fs.readFileSync(file, 'utf-8').toString().split(',').map(n => +n);
+const data = fs.readFileSync(file, 'utf-8').toString().split(',');
 
 // prepare day array and fill with fish per day
 const days = Array.from({ length: 9 }).fill(0);
