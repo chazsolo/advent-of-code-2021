@@ -19,18 +19,16 @@ function simulateFishBreedingCycle(fishies, days) {
   return fishies;
 }
 
-(function part1() {
-  console.time('part 1');
-  const fishies = simulateFishBreedingCycle([...days], 80);
+const part1 = d => () => {
+  const fishies = simulateFishBreedingCycle([...d], 80);
+  return fishies.reduce(sum);
+}
 
-  console.log('part 1 fishies', fishies.reduce(sum));
-  console.timeEnd('part 1');
-})();
+const part2 = d => () => {
+  const fishies = simulateFishBreedingCycle([...d], 256);
+  return fishies.reduce(sum);
+}
 
-(function part2() {
-  console.time('part 2');
-  const fishies = simulateFishBreedingCycle([...days], 256);
-
-  console.log('part 2 fishies', fishies.reduce(sum));
-  console.timeEnd('part 2');
-})();
+module.exports = {
+  exercises: [part1([...days]), part2([...days])],
+}

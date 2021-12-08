@@ -1,20 +1,26 @@
 const fs = require('fs');
+const path = require('path');
 
-const data = fs.readFileSync('./data.txt').toString().split(/\r?\n/);
+const file = path.join(__dirname, 'data.txt');
+const data = fs.readFileSync(file, 'utf-8').toString().split(/\r?\n/);
 
 const incReduce = (increments, value, index, array) => {
-    increments += value < array[index + 1] ? 1 : 0;
-    return increments;
+  increments += value < array[index + 1] ? 1 : 0;
+  return increments;
 }
 
-const inc = data.reduce(incReduce, 0);
+const part1 = () => {
+  return data.reduce(incReduce, 0);
+}
 
-const inc2 = data.map((v, i) => {
+const part2 = () => {
+  return data.map((v, i) => {
     if (data[i] && data[i + 1] && data[i + 2]) {
-        return data[i] + data[i + 1] + data[i + 2]
+      return data[i] + data[i + 1] + data[i + 2]
     }
-}).filter(Boolean).reduce(incReduce, 0);
+  }).filter(Boolean).reduce(incReduce, 0);
+}
 
-console.log(inc2);
-// console.log(a.length);
-// console.log(inc2.length);
+module.exports = {
+  exercises: [part1, part2],
+}

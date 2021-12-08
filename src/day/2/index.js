@@ -1,40 +1,45 @@
 const fs = require('fs');
+const path = require('path');
 
-const array = fs.readFileSync('./data.txt').toString().split(/\r?\n/);
+const file = path.join(__dirname, 'data.txt');
+const array = fs.readFileSync(file, 'utf-8').toString().split(/\r?\n/);
 
-// part A
-/*const { x, y } = array.reduce((o, v) => {
-  const [direction, velocity] = v.split(' ');
+const part1 = () => {
+  const { x, y } = array.reduce((o, v) => {
+    const [direction, velocity] = v.split(' ');
 
-  ({
-    forward: () => o.x += +velocity,
-    down: () => o.y += +velocity,
-    up: () => o.y -= +velocity,
-  }[direction])();
+    ({
+      forward: () => o.x += +velocity,
+      down: () => o.y += +velocity,
+      up: () => o.y -= +velocity,
+    }[direction])();
 
-  return o;
-}, { x: 0, y: 0 });
+    return o;
+  }, { x: 0, y: 0 });
 
-const result = x * y;*/
+  return x * y;
+}
 
-// console.log(result);
+const part2 = () => {
+  const { x, y } = array.reduce((o, v) => {
+    const [direction, velocity] = v.split(' ');
 
-// part B
-const { x, y } = array.reduce((o, v) => {
-  const [direction, velocity] = v.split(' ');
+    ({
+      forward: () => {
+        o.x += +velocity;
+        o.y += o.aim * +velocity;
+      },
+      down: () => o.aim += +velocity,
+      up: () => o.aim -= +velocity,
+    }[direction])();
 
-  ({
-    forward: () => {
-      o.x += +velocity;
-      o.y += o.aim * +velocity;
-    },
-    down: () => o.aim += +velocity,
-    up: () => o.aim -= +velocity,
-  }[direction])();
+    return o;
+  }, { aim: 0, x: 0, y: 0 });
 
-  return o;
-}, { aim: 0, x: 0, y: 0 });
+  return x * y;
+}
 
-const result = x * y;
+module.exports = {
+  exercises: [part1, part2],
+}
 
-console.log(result);

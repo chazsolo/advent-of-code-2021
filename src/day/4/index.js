@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const { identity, sum } = require('../../util');
 
 /**
@@ -47,7 +48,8 @@ const calculateAnswer = (board, drawnNumbers) => {
   return finalDrawn * unmarkedValuesSum;
 }
 
-const lines = fs.readFileSync('./data.txt', 'utf-8').split(/\r?\n/).filter(identity);
+const file = path.join(__dirname, 'data.txt');
+const lines = fs.readFileSync(file, 'utf-8').split(/\r?\n/).filter(identity);
 const gameNumbers = lines.shift().split(',').map(n => +n);
 const boards = new Map();
 
@@ -59,7 +61,7 @@ while (lines.length) {
   boards.set(boardId++, board);
 }
 
-(function part1() {
+const part1 = () => {
   let winningBoard = null;
   let winningDrawn = [];
   let turn = 5; // start at turn 5, need at least 5 turns to have the first win
@@ -81,15 +83,12 @@ while (lines.length) {
     turn++;
   }
 
-  const answer = calculateAnswer(winningBoard, winningDrawn);
+  return calculateAnswer(winningBoard, winningDrawn);
+}
 
-  console.log('part 1 answer', answer);
-})();
-
-(function part2() {
+const part2 = () => {
   // figure out which board is the last one to win. to do so, run each turn and when a board wins
   // remove it from the Map of boards. Once the Map has a single board left, we have our answer.
-  // TODO doesn't work
   let lastBoardLeft;
   let turn = 5; // start at turn 5, need at least 5 turns to have the first win
 
@@ -107,16 +106,15 @@ while (lines.length) {
         } else {
           lastBoardLeft = boards.get([...boards.keys()][0]);
 
-          const answer = calculateAnswer(lastBoardLeft, drawn);
-
-          console.log('part 2 answer', answer);
-
-          // stop the iteration
-          boards.delete(id);
+          return calculateAnswer(lastBoardLeft, drawn);
         }
       }
     }
 
     turn++;
   }
-})();
+}
+
+module.exports = {
+  exercises: [part1, part2],
+};

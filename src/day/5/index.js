@@ -52,27 +52,23 @@ const lines = data.map(d => {
   return [{ x: +x1, y: +y1 }, { x: +x2, y: +y2 }];
 });
 
-(function part1() {
-  console.time('Part 1');
-
+const part1 = () => {
   let grid = Array.from({ length: gridY + 1 }, () => new Array(gridX + 1).fill(0));
 
   // filter out diagonal lines first
   const pLines = clone(lines).filter(([p1, p2]) => (p1.x === p2.x) || (p1.y === p2.y));
   pLines.forEach((line) => drawLine(line, grid));
-  const count = getCount(grid, 2);
 
-  console.log('count part 1', count);
-  console.timeEnd('Part 1');
-})();
+  return getCount(grid, 2);
+}
 
-(function part2() {
-  console.time('Part 2');
-
+const part2 = () => {
   let grid = Array.from({ length: gridY + 1 }, () => new Array(gridX + 1).fill(0));
   clone(lines).forEach(line => drawLine(line, grid));
-  const count = getCount(grid, 2);
 
-  console.log('count part 2', count);
-  console.timeEnd('Part 2');
-})();
+  return getCount(grid, 2);
+}
+
+module.exports = {
+  exercises: [part1, part2],
+}
